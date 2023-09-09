@@ -5,6 +5,8 @@ import com.devshehan.employeemanagementapi.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/v1")
@@ -18,5 +20,10 @@ public class EmployeeController {
     @PostMapping(path = "addNewEmp")
     public Employee createEmployee(@RequestBody Employee employee){
         return employeeService.addNewEmployee(employee);
+    }
+
+    @GetMapping("/getAllEmployees")
+    public List<Employee> getAllEmployees(){
+        return employeeService.getAllEmployees();
     }
 }
