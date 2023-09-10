@@ -25,4 +25,12 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
+    public void deleteEmployee(Long empID){
+        boolean exists = employeeRepository.existsById(empID);
+        if (!exists){
+            throw new IllegalStateException("not exist" + empID + "in the database");
+        }
+        employeeRepository.deleteById(empID);
+    }
+
 }
