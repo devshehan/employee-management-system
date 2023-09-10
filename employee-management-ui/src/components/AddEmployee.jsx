@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import axios from 'axios';
-import swal from 'sweetalert';
-
+import axios from "axios";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
   const clearForm = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
+    setFirstName("");
+    setLastName("");
+    setEmail("");
   };
 
   const handleSubmit = async () => {
@@ -19,30 +20,37 @@ const AddEmployee = () => {
       const dataToSend = {
         firstName: firstName,
         lastName: lastName,
-        email: email
+        email: email,
       };
-      const response = await axios.post('http://localhost:8080/api/v1/addNewEmp', dataToSend);
-      
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/addNewEmp",
+        dataToSend
+      );
+
       if (response.status === 200) {
         clearForm();
         swal({
           title: "Good job!",
           text: "Employee added successfully!",
           icon: "success",
-          button: "Aww yiss!"
+          button: "Aww yiss!",
+        }).then(() => {
+          navigate("/");
         });
       }
     } catch (error) {
-      console.error('There was an error adding the employee:', error.response ? error.response.data : error.message);
+      console.error(
+        "There was an error adding the employee:",
+        error.response ? error.response.data : error.message
+      );
       swal({
         title: "Error!",
         text: "There was an error adding the employee. Please try again.",
         icon: "error",
-        button: "Okay"
+        button: "Okay",
       });
     }
   };
-
 
   return (
     <div className="flex max-w-3xl mx-auto shadow border-b mt-2">
@@ -53,8 +61,8 @@ const AddEmployee = () => {
 
         <div className="mt-2 items-center justify-center">
           <label className="block font-thin">First Name : </label>
-          <input 
-            name="firstName" 
+          <input
+            name="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             className="h-10 border p-1"
@@ -63,7 +71,7 @@ const AddEmployee = () => {
 
         <div className="mt-2 items-center justify-center">
           <label className="block font-thin">Last Name : </label>
-          <input 
+          <input
             name="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -74,22 +82,22 @@ const AddEmployee = () => {
         <div className="mt-2 items-center justify-center">
           <label className="block font-thin">Email : </label>
           <input
+            type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="h-10 border mx-auto p-1"
-            type="email"
           ></input>
         </div>
 
         <div className="my-4 space-x-4">
-          <button 
+          <button
             onClick={handleSubmit}
             className="bg-green-400 p-2 px-6 rounded hover:bg-green-700 text-white"
           >
             Save
           </button>
-          <button 
+          <button
             onClick={clearForm}
             className="bg-red-400 p-2 px-6 rounded hover:bg-red-700 text-white"
           >
